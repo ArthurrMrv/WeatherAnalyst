@@ -6,7 +6,10 @@ class Days:
     def __init__(self) -> None:
         self.data = dict()
         self.cities = set()
-        
+    
+    def getCityNames(self):
+        return self.cities
+    
     def addDay(self, day):
         self.cities.add(day.location)
         self.data[f"{day.getDate()}|{day.getLocation()}"] = day
@@ -44,7 +47,6 @@ class Days:
         city_weather = self.getCityWeather(city_name)
         return sum([day.getPrecipitation() for day in city_weather]) if len(city_weather) > 0 else None
     
-
     def categorizeDay(self, city_name, date, t = 0.2):
         
         if city_name.lower() not in self.cities:
@@ -101,26 +103,23 @@ class Days:
             plt.title(f'Correlation Matrix for {city_name.capitalize()}')
             plt.colorbar()
             plt.show()
-        
-    
-    def loadTemp(self, filename):
-        with open(filename, 'r') as file:
-            lines = file.readlines()[1:]
-            for line in lines:
-                line = line.strip().split(',')
-                date = line[0]
 
-                location = line[1]
-                maxTemp = float(line[2])
-                minTemp = float(line[3])
-                precipitation = float(line[4])
-                windSpeed = float(line[5])
-                humidity = float(line[6])
-                cloudCover = float(line[7])
-                co2Levels = float(line[8]) if len(line) > 8 else None
-                seaLevelRise = float(line[9]) if len(line) > 9 else None
-                self.cities.add(location.lower())
-                self.addDay(Day(date, location, maxTemp, minTemp, precipitation, windSpeed, humidity, cloudCover, co2Levels, seaLevelRise))
+    def saveCorrelationMatrix(self, filename, *city_names):
+        num_cities = len(city_names)
+        fig, axs = plt.subplots(num_cities, 1, figsize=(10, 10*num_cities))
+
+        for idx, city_name in enumerate(city_names):
+            matrix, titles = self.correlationMatrix(city_name)
+            cax = axs[idx].matshow(matrix)
+            axs[idx].set_xticks(range(len(titles)))
+            axs[idx].set_xticklabels(titles, rotation=45)
+            axs[idx].set_yticks(range(len(titles)))
+            axs[idx].set_yticklabels(titles)
+            axs[idx].set_title(f'Correlation Matrix for {city_name.capitalize()}')
+            fig.colorbar(cax, ax=axs[idx])
+
+        plt.tight_layout()
+        plt.savefig(filename)
     
     def plotTemperature(self, *city_names):
         for city_name in city_names:
@@ -137,6 +136,22 @@ class Days:
         plt.ylabel('Temperature (°C)')
         plt.title('Temperature over time')
         plt.show()
+        
+    def saveTemperature(self, filename, *city_names):
+        for city_name in city_names:
+            city_weather = self.getCityWeather(city_name)
+            plt.plot([day.getDate() for day in city_weather], [day.getMaxTemp() for day in city_weather], label = city_name)
+        #affiche labels
+        plt.legend()
+        
+        #put legent box outside of graph
+        plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+
+        plt.xticks(rotation=45)
+        plt.xlabel('Date')
+        plt.ylabel('Temperature (°C)')
+        plt.title('Temperature over time')
+        plt.savefig(filename)
     
     def plotAvgTemperature(self, *city_names):
         for city_name in city_names:
@@ -148,6 +163,22 @@ class Days:
         plt.ylabel('Temperature (°C)')
         plt.title('Average Temperature')
         plt.show()
+        
+    def saveAvgTemperature(self, filename, *city_names):
+        for city_name in city_names:
+            city_weather = self.getCityWeather(city_name)
+            plt.plot([day.getDate() for day in city_weather], [day.getMaxTemp() for day in city_weather], label = city_name)
+        #affiche labels
+        plt.legend()
+        
+        #put legent box outside of graph
+        plt.legend(bbox_to_anchor=(1.05, 1), loc='upper left', borderaxespad=0.)
+
+        plt.xticks(rotation=45)
+        plt.xlabel('Date')
+        plt.ylabel('Temperature (°C)')
+        plt.title('Temperature over time')
+        plt.savefig(filename)
         
     #add data by loading a file
     def loadTemp(self, filename):
