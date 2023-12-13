@@ -248,4 +248,9 @@ class Day:
         return (self.maxTemp + self.minTemp) / 2
     
     def __str__(self):
-        return "Date: " + str(self.date) + "\nLocation: " + str(self.location) + "\nMax Temp: " + str(self.maxTemp) + "\nMin Temp: " + str(self.minTemp) + "\nPrecipitation: " + str(self.precipitation) + "\nWind Speed: " + str(self.windSpeed) + "\nHumidity: " + str(self.humidity) + "\nCloud Cover: " + str(self.cloudCover) + "\nCO2 Levels: " + str(self.co2Levels) + "\nSea Level Rise: " + str(self.seaLevelRise) + "\n"
+        ans = "Date: " + str(self.date) + "\nLocation: " + str(self.location) + "\nMax Temp: " + str(self.maxTemp) + "\nMin Temp: " + str(self.minTemp) + "\nPrecipitation: " + str(self.precipitation) + "\nWind Speed: " + str(self.windSpeed) + "\nHumidity: " + str(self.humidity) + "\nCloud Cover: " + str(self.cloudCover)
+        if self.co2Levels is not None:
+            ans += "\nCO2 Levels: " + str(self.co2Levels)
+        if self.seaLevelRise is not None:
+            ans += "\nSea Level Rise: " + str(self.seaLevelRise)
+        return ans + '\n'

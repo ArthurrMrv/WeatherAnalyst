@@ -144,19 +144,18 @@ def temp_over_time():
 
 def bar_chart_averages():
     layout = [
-        [sg.Text('Bar Chart averages Window')],
         [sg.Canvas(days_instances.plotAvgTemperature(*list(days_instances.cities)), key='-GRAPH-')],
     ]
 
-    window = sg.Window('Total Precipitation', layout)
-
+    bar_chart_window = sg.Window('Total Precipitation', layout)
+    
     while True:
-        event, values = window.read()
+        event, values = bar_chart_window.read()
 
-        if event == sg.WINDOW_CLOSED:
+        if event == sg.WINDOW_CLOSED or event == 'Cancel':
             break
 
-    window.close()
+    bar_chart_window.close()
 
 def hottest_and_coldest_day():
     layout = [
