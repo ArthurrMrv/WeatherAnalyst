@@ -2,7 +2,7 @@ import PySimpleGUI as sg
 from Days import Days
 
 days_instances = Days()
-days_instances.loadTemp('C:\\Users\\ulyss\\Documents\\Visual Studio\\Python\\Algorithms and Software Concepts\\Final_Project\\Algorithms-main\\data_temperature.txt')
+days_instances.loadTemp('data_temperature.txt')
 
 # Function to create a new window for Average temperatures
 
