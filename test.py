@@ -1,6 +1,8 @@
 import PySimpleGUI as sg
 from Days import Days
 
+#C:\Users\ulyss\Documents\Visual Studio\Python\Algorithms and Software Concepts\Final_Project\Algorithms-main
+
 days_instances = Days()
 days_instances.loadTemp('data_temperature.txt')
 
@@ -144,18 +146,19 @@ def temp_over_time():
 
 def bar_chart_averages():
     layout = [
+        [sg.Text('Bar Chart averages Window')],
         [sg.Canvas(days_instances.plotAvgTemperature(*list(days_instances.cities)), key='-GRAPH-')],
     ]
 
-    bar_chart_window = sg.Window('Total Precipitation', layout)
-    
-    while True:
-        event, values = bar_chart_window.read()
+    window = sg.Window('Total Precipitation', layout)
 
-        if event == sg.WINDOW_CLOSED or event == 'Cancel':
+    while True:
+        event, values = window.read()
+
+        if event == sg.WINDOW_CLOSED:
             break
 
-    bar_chart_window.close()
+    window.close()
 
 def hottest_and_coldest_day():
     layout = [
@@ -192,7 +195,7 @@ def hottest_and_coldest_day():
     
     window.close()
 
-"""def all_hottest_and_coldest_day():
+"""def all_hottest_and_coldest_days():
     layout = [
         [sg.Text('All Hottest and Coldest day')],
     ]
@@ -209,16 +212,59 @@ def hottest_and_coldest_day():
 
         user_input = names.append(days_instances)
 
-        print (names)
 
         result1 = days_instances.hotestDay()
         result2 = days_instances.coldestDay()
 
+        for c in days_instances.cities:
+            names.append(f"{user_input.capitalize()}'s hottest day:\n{result1} \n{user_input.capitalize()}'s coldest day:\n{result2}")
+
+
         # Update the Text element with the result
-        sg.popup(f"{user_input.capitalize()}'s hottest day:\n{result1} \n{user_input.capitalize()}'s coldest day:\n{result2}")
+        sg.popup(print(names))
     
     window.close()
+
 """
+
+def all_hottest_and_coldest_days():
+    layout = [
+        [sg.Text('All Hottest and Coldest day')],
+        [sg.Text('', size=(100, 50), key='-OUTPUT-')],
+        [sg.Button('Exit')]
+    ]
+
+    window = sg.Window('All Hottest and Coldest day', layout)
+
+    while True:
+        event, values = window.read()
+
+        if event == sg.WINDOW_CLOSED or event == 'Exit':
+            break
+
+        cities_list = list(days_instances.cities)
+
+        output_text = []
+
+        while len(cities_list) >1:
+            result1 = days_instances.hotestDay(cities_list[0])
+            result2 = days_instances.coldestDay(cities_list[0])
+            output_text.append(f"{cities_list[0].capitalize()}'s hottest day: {result1}\n{cities_list[0].capitalize()}'s coldest day: {result2}\n\n")
+            cities_list.pop(0)
+            result1 = 0
+            result2 = 0
+
+
+        #for city in cities_list:
+         #   result1 = days_instances.hotestDay(city)
+          #  result2 = days_instances.coldestDay(city)
+           # output_text += (f"{city.capitalize()}'s hottest day: {result1}\n{city.capitalize()}'s coldest day: {result2}\n\n")
+            
+
+        # Update the Text element with the result outside the loop
+        window['-OUTPUT-'].update(''.join(output_text))
+
+    window.close()
 
 # Define the buttons and their associated functions
 buttons = [
@@ -228,7 +274,8 @@ buttons = [
     {'text': 'Temperature over time plot', 'function': temp_over_time},
     {'text': 'Bar Chart comparison of\n average temperatures', 'function': bar_chart_averages},
     {'text': 'Hottest and Coldest day', 'function': hottest_and_coldest_day},
-    #{'text': 'Absolute Hottest and\nColdest day', 'function': all_hottest_and_coldest_day},
+    {'text': 'All Hottest and\nColdest days', 'function': all_hottest_and_coldest_days},
+    #{'text': 'Overall Hottest day', 'function': overall_hottest_day},
 
 
 
