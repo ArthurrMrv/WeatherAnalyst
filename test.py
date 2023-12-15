@@ -195,76 +195,35 @@ def hottest_and_coldest_day():
     
     window.close()
 
-"""def all_hottest_and_coldest_days():
-    layout = [
-        [sg.Text('All Hottest and Coldest day')],
-    ]
-
-    window = sg.Window('All Hottest and Coldest day', layout)
-
-    while True:
-        event, values = window.read()
-
-        if event == sg.WINDOW_CLOSED:
-            break
-
-        names = []
-
-        user_input = names.append(days_instances)
-
-
-        result1 = days_instances.hotestDay()
-        result2 = days_instances.coldestDay()
-
-        for c in days_instances.cities:
-            names.append(f"{user_input.capitalize()}'s hottest day:\n{result1} \n{user_input.capitalize()}'s coldest day:\n{result2}")
-
-
-        # Update the Text element with the result
-        sg.popup(print(names))
-    
-    window.close()
-
-"""
-
 def all_hottest_and_coldest_days():
     layout = [
-        [sg.Text('All Hottest and Coldest day')],
-        [sg.Text('', size=(100, 50), key='-OUTPUT-')],
+        [sg.Text('All Hottest and Coldest days')],
+        [sg.Multiline('', size=(200, 50), key='-OUTPUT-', autoscroll=False, disabled=True)],
         [sg.Button('Exit')]
     ]
 
-    window = sg.Window('All Hottest and Coldest day', layout)
+    window = sg.Window('All Hottest and Coldest day', layout, finalize=True)
 
-    while True:
-        event, values = window.read()
+    cities_list = list(days_instances.cities)
+    output_text = ''
 
-        if event == sg.WINDOW_CLOSED or event == 'Exit':
-            break
+    while len(cities_list)>0:
+        city = cities_list[0].capitalize()
+        result1 = days_instances.hotestDay(city)
+        result2 = days_instances.coldestDay(city)
+        output_text += f"{city}'s hottest day: {result1}\n{city}'s coldest day: {result2}\n\n"
 
-        cities_list = list(days_instances.cities)
+        result1 = 0
+        result2 = 0
 
-        output_text = []
+        cities_list.pop(0)
 
-        while len(cities_list) >1:
-            result1 = days_instances.hotestDay(cities_list[0])
-            result2 = days_instances.coldestDay(cities_list[0])
-            output_text.append(f"{cities_list[0].capitalize()}'s hottest day: {result1}\n{cities_list[0].capitalize()}'s coldest day: {result2}\n\n")
-            cities_list.pop(0)
-            result1 = 0
-            result2 = 0
+    # Update the Multiline element with the result
+    window['-OUTPUT-'].update(value=output_text)
 
+    # Call window.read() to ensure Element updates are processed
+    event, values = window.read()
 
-        #for city in cities_list:
-         #   result1 = days_instances.hotestDay(city)
-          #  result2 = days_instances.coldestDay(city)
-           # output_text += (f"{city.capitalize()}'s hottest day: {result1}\n{city.capitalize()}'s coldest day: {result2}\n\n")
-            
-
-        # Update the Text element with the result outside the loop
-        window['-OUTPUT-'].update(''.join(output_text))
-
-    window.close()
 
 # Define the buttons and their associated functions
 buttons = [
