@@ -224,6 +224,125 @@ def all_hottest_and_coldest_days():
     # Call window.read() to ensure Element updates are processed
     event, values = window.read()
 
+def overall_hottest_day():
+    layout = [
+        [sg.Text('Overall Hottest Day')],
+        [sg.Text('', size=(50, 10), key='-OUTPUT-')],
+        [sg.Button('Exit')]
+    ]
+
+    window = sg.Window('Overall Hottest Day', layout, finalize=True)
+
+    cities_list = list(days_instances.cities)
+    all_hottest_days = []
+
+    while len(cities_list) > 0:
+        city = cities_list[0]
+        result1 = days_instances.hotestDay(city)
+        all_hottest_days.append(result1)
+
+        cities_list.pop(0)
+
+    # Find the overall hottest day
+    overall_hottest_day = max(all_hottest_days, key=lambda day: day.getMaxTemp())
+
+    # Update the Text element with the result
+    output_text = f"The overall hottest day out of all the cities was:\n{str(overall_hottest_day)}"
+    window['-OUTPUT-'].update(output_text)
+
+    # Event loop to keep the window open
+    while True:
+        event, values = window.read()
+
+        if event == sg.WINDOW_CLOSED or event == 'Exit':
+            break
+
+    window.close()
+
+def overall_coldest_day():
+    layout = [
+        [sg.Text('Overall Coldest Day')],
+        [sg.Text('', size=(50, 10), key='-OUTPUT-')],
+        [sg.Button('Exit')]
+    ]
+
+    window = sg.Window('Overall Coldest Day', layout, finalize=True)
+
+    cities_list = list(days_instances.cities)
+    all_coldest_days = []
+
+    while len(cities_list) > 0:
+        city = cities_list[0]
+        result1 = days_instances.coldestDay(city)
+        all_coldest_days.append(result1)
+
+        cities_list.pop(0)
+
+    # Find the overall coldest day
+    overall_coldest_day = min(all_coldest_days, key=lambda day: day.getMinTemp())
+
+    # Update the Text element with the result
+    output_text = f"The overall coldest day out of all the cities was:\n{str(overall_coldest_day)}"
+    window['-OUTPUT-'].update(output_text)
+
+    # Event loop to keep the window open
+    while True:
+        event, values = window.read()
+
+        if event == sg.WINDOW_CLOSED or event == 'Exit':
+            break
+
+    window.close()
+
+def specific_day_category():
+    # Layout for the input window
+    layout_input = [
+        [sg.Text('Enter Date (YYYY-MM-DD):'), sg.InputText(key='-DATE-', size=(15, 1))],
+        [sg.Text('Enter City:'), sg.InputText(key='-CITY-', size=(15, 1))],
+        [sg.Button('OK')]
+    ]
+
+    window_input = sg.Window('Enter Date and City', layout_input)
+
+    while True:
+        event_input, values_input = window_input.read()
+
+        if event_input == sg.WINDOW_CLOSED or event_input == 'OK':
+            break
+
+    window_input.close()
+
+    # Get the values entered by the user
+    user_date = values_input['-DATE-']
+    user_city = values_input['-CITY-'].lower()
+
+    # Fetch information for the specified date and city
+    try:
+        day_info = days_instances.getDay(user_date, user_city)
+    except KeyError:
+        sg.popup(f"             ERROR\nNo data found for {user_city.capitalize()} on {user_date}")
+        return
+
+    # Layout for the output window
+    layout_output = [[sg.Text(f'On the {user_date} in the city of {user_city.capitalize()} the temperature was')]]
+    if day_info:
+        category_text = days_instances.categorizeDay(user_city, user_date)
+    if category_text is not None:
+        layout_output.append([sg.Text(category_text)])
+    else:
+        layout_output.append([sg.Text("No temperature data available for categorization.")])
+
+    layout_output.append([sg.Button('OK')])
+    window_output = sg.Window('Weather Information', layout_output)
+
+    while True:
+        event_output, _ = window_output.read()
+
+        if event_output == sg.WINDOW_CLOSED or event_output == 'OK':
+            break
+
+    window_output.close()
+
 
 # Define the buttons and their associated functions
 buttons = [
@@ -234,7 +353,9 @@ buttons = [
     {'text': 'Bar Chart comparison of\n average temperatures', 'function': bar_chart_averages},
     {'text': 'Hottest and Coldest day', 'function': hottest_and_coldest_day},
     {'text': 'All Hottest and\nColdest days', 'function': all_hottest_and_coldest_days},
-    #{'text': 'Overall Hottest day', 'function': overall_hottest_day},
+    {'text': 'Overall Hottest day', 'function': overall_hottest_day},
+    {'text': 'Overall Coldest day', 'function': overall_coldest_day},
+    {'text': 'Specific day category', 'function': specific_day_category},
 
 
 
