@@ -199,7 +199,14 @@ class Days:
                 seaLevelRise = float(line[9]) if len(line) > 9 else None
                 self.cities.add(location.lower())
                 self.addDay(Day(date, location, maxTemp, minTemp, precipitation, windSpeed, humidity, cloudCover, co2Levels, seaLevelRise))
-    
+      def factors_max_temp(self, city_name):
+        city = self.cities
+        return (f'{city_name} is not antananarivo')   
+"""paris: architecture is a heat trap, not enough trees in the city, very dense city, pollution, roadworks"""
+""" london, new york, los angeles: Urban Heat Island (UHI) Effect, Weather Patterns, Global Warming and Climate Change, Greenhouse Gas Emissions, Land Use Changes, Air Pollution, Solar Radiation, Human Activities, Heatwaves, Topography, Water Bodies, Heat Retention in Buildings"""
+"""new delhi: Dust and Sandstorms, Vegetation Cover, Population Density, Infrastructure Development, Waste Heat, Adaptation Measures"""
+
+
 class Day:
     
     def __init__(self, date, location, maxTemp, minTemp, precipitation, windSpeed, humidity, cloudCover, co2Levels = None, seaLevelRise = None):
