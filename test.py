@@ -11,7 +11,7 @@ days_instances.loadTemp('data_temperature.txt')
 def show_average_temperature():
     layout = [
         [sg.Text('Average temperature window')],
-        [sg.Text('Please enter all city names in lowercase')],
+        [sg.Text('Please enter city name')],
         [sg.InputText(key='-USER_INPUT-', size=(30, 1))],
         [sg.Button('OK'), sg.Button('Cancel')],
     ]
@@ -24,12 +24,7 @@ def show_average_temperature():
         if event == sg.WINDOW_CLOSED or event == 'Cancel':
             break
 
-        user_input = values['-USER_INPUT-']
-
-        # Display the message if the user input contains uppercase characters
-        if any(char.isupper() for char in user_input):
-            sg.popup('ERROR: Please enter all city names in lowercase')
-            continue
+        user_input = values['-USER_INPUT-'].lower()
 
         if days_instances.getCityWeather(user_input) == []:
             sg.popup(f'Error: {user_input} is not a valid city name')
@@ -44,7 +39,7 @@ def show_average_temperature():
 def show_total_precipitation():
     layout = [
         [sg.Text('Total Precipitation Window')],
-        [sg.Text('Please enter all city names in lowercase')],
+        [sg.Text('Please enter city name')],
         [sg.InputText(key='-USER_INPUT-', size=(30, 1))],
         [sg.Button('OK'), sg.Button('Cancel')],
     ]
@@ -57,12 +52,8 @@ def show_total_precipitation():
         if event == sg.WINDOW_CLOSED or event == 'Cancel':
             break
 
-        user_input = values['-USER_INPUT-']
+        user_input = values['-USER_INPUT-'].lower()
 
-        # Display the message if the user input contains uppercase characters
-        if any(char.isupper() for char in user_input):
-            sg.popup('ERROR: Please enter all city names in lowercase')
-            continue
         # Display the message if the user input is invalid
         if days_instances.getCityWeather(user_input) == []:
             sg.popup(f'Error: {user_input} is not a valid city name')
@@ -78,7 +69,7 @@ def show_total_precipitation():
 def max_and_mind_wind_speed():
     layout = [
         [sg.Text('Max and Min Wind Speed Winds')],
-        [sg.Text('Please enter all city names in lowercase')],
+        [sg.Text('Please enter city name')],
         [sg.InputText(key='-USER_INPUT-', size=(30, 1))],
         [sg.Button('OK'), sg.Button('Cancel')],
     ]
@@ -91,13 +82,9 @@ def max_and_mind_wind_speed():
         if event == sg.WINDOW_CLOSED or event == 'Cancel':
             break
 
-        user_input = values['-USER_INPUT-']
+        user_input = values['-USER_INPUT-'].lower()
 
-        # Display the message if the user input contains uppercase characters
-        if any(char.isupper() for char in user_input):
-            sg.popup('ERROR: Please enter all city names in lowercase')
-            continue
-        # Display the message if the user input is invalid
+       # Display the message if the user input is invalid
         if days_instances.getCityWeather(user_input) == []:
             sg.popup(f'Error: {user_input} is not a valid city name')
             continue
@@ -113,7 +100,7 @@ def max_and_mind_wind_speed():
 def temp_over_time():
     layout = [
         [sg.Text('Temperature over time Window')],
-        [sg.Text('Please enter all city names in lowercase')],
+        [sg.Text('Please enter city name')],
         [sg.InputText(key='-USER_INPUT-', size=(30, 1))],
         [sg.Button('OK'), sg.Button('Cancel')],
     ]
@@ -126,12 +113,8 @@ def temp_over_time():
         if event == sg.WINDOW_CLOSED or event == 'Cancel':
             break
 
-        user_input = values['-USER_INPUT-']
+        user_input = values['-USER_INPUT-'].lower()
 
-        # Display the message if the user input contains uppercase characters
-        if any(char.isupper() for char in user_input):
-            sg.popup('ERROR: Please enter all city names in lowercase')
-            continue
         # Display the message if the user input is invalid
         if days_instances.getCityWeather(user_input) == []:
             sg.popup(f'Error: {user_input} is not a valid city name')
@@ -163,7 +146,7 @@ def bar_chart_averages():
 def hottest_and_coldest_day():
     layout = [
         [sg.Text('Hottest and Coldest day')],
-        [sg.Text('Please enter all city names in lowercase')],
+        [sg.Text('Please enter city name')],
         [sg.InputText(key='-USER_INPUT-', size=(30, 1))],
         [sg.Button('OK'), sg.Button('Cancel')],
     ]
@@ -176,12 +159,8 @@ def hottest_and_coldest_day():
         if event == sg.WINDOW_CLOSED or event == 'Cancel':
             break
 
-        user_input = values['-USER_INPUT-']
+        user_input = values['-USER_INPUT-'].lower()
 
-        # Display the message if the user input contains uppercase characters
-        if any(char.isupper() for char in user_input):
-            sg.popup('ERROR: Please enter all city names in lowercase')
-            continue
         # Display the message if the user input is invalid
         if days_instances.getCityWeather(user_input) == []:
             sg.popup(f'Error: {user_input} is not a valid city name')
@@ -316,6 +295,7 @@ def specific_day_category():
     user_date = values_input['-DATE-']
     user_city = values_input['-CITY-'].lower()
 
+
     # Fetch information for the specified date and city
     try:
         day_info = days_instances.getDay(user_date, user_city)
@@ -343,6 +323,35 @@ def specific_day_category():
 
     window_output.close()
 
+def correlation_matrix():
+    layout = [
+        [sg.Text('Correlation Matrix for a city')],
+        [sg.Text('Please enter city name')],
+        [sg.InputText(key='-USER_INPUT-', size=(30, 1))],
+        [sg.Button('OK'), sg.Button('Cancel')],
+    ]
+
+    window = sg.Window('Correlation Matrix for a city', layout)
+
+    while True:
+        event, values = window.read()
+
+        if event == sg.WINDOW_CLOSED or event == 'Cancel':
+            break
+
+        user_input = values['-USER_INPUT-'].lower()
+
+        # Display the message if the user input is invalid
+        if days_instances.getCityWeather(user_input) == []:
+            sg.popup(f'Error: {user_input} is not a valid city name')
+            continue
+
+        result = days_instances.plotCorrelationMatrix(user_input)
+        
+        # Update the Text element with the result
+        sg.popup(f"{user_input.capitalize()}'s correlation matrix:\n{result}")
+    
+    window.close()
 
 # Define the buttons and their associated functions
 buttons = [
@@ -356,21 +365,23 @@ buttons = [
     {'text': 'Overall Hottest day', 'function': overall_hottest_day},
     {'text': 'Overall Coldest day', 'function': overall_coldest_day},
     {'text': 'Specific day category', 'function': specific_day_category},
+    {'text': 'Correlation Matrix between weather variables for a city', 'function': correlation_matrix},
 
 
 
     # Add more buttons with associated functions...
 ]
 
-column1 = [[sg.B(button['text'], size=(22, 3))] for button in buttons[:3]]
-column2 = [[sg.B(button['text'], size=(22, 3))] for button in buttons[3:6]]
-column3 = [[sg.B(button['text'], size=(22, 3))] for button in buttons[6:]]
+column1 = [[sg.B(button['text'], size=(22, 3))] for button in buttons[:4]]
+column2 = [[sg.B(button['text'], size=(22, 3))] for button in buttons[4:8]]
+column3 = [[sg.B(button['text'], size=(22, 3))] for button in buttons[8:]]
 
 layout = [
     [sg.Column(column1), sg.Column(column2), sg.Column(column3)],
 ]
 
-window = sg.Window("Final Project", layout, margins=(200, 100))
+window = sg.Window('Final Project', layout, margins=(200, 100), resizable=True)
+
 
 while True:
     event, values = window.read()
