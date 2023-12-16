@@ -1,3 +1,9 @@
+import os
+import pathlib
+
+os.system("cd {}".format(pathlib.Path(__file__).parent.resolve()))
+os.system("pip3 install PySimpleGUI")
+
 import PySimpleGUI as sg
 from Days import Days
 
@@ -27,7 +33,8 @@ def show_average_temperature():
         user_input = values['-USER_INPUT-'].lower()
 
         if days_instances.getCityWeather(user_input) == []:
-            sg.popup(f'Error: {user_input} is not a valid city name')
+
+            sg.popup(f'Error: {user_input} is not a valid city name.\nPlease select one of this list : \n{[tuple(days_instances.getCityNames())[i].capitalize() for i in range(len(days_instances.getCityNames()))]}')
             continue
 
         result = days_instances.getAvgTemperature(user_input)
@@ -56,7 +63,7 @@ def show_total_precipitation():
 
         # Display the message if the user input is invalid
         if days_instances.getCityWeather(user_input) == []:
-            sg.popup(f'Error: {user_input} is not a valid city name')
+            sg.popup(f'Error: {user_input} is not a valid city name.\nPlease select one of this list : \n{[tuple(days_instances.getCityNames())[i].capitalize() for i in range(len(days_instances.getCityNames()))]}')
             continue
 
         result = days_instances.getTotalPrecipitation(user_input)
@@ -86,7 +93,7 @@ def max_and_mind_wind_speed():
 
        # Display the message if the user input is invalid
         if days_instances.getCityWeather(user_input) == []:
-            sg.popup(f'Error: {user_input} is not a valid city name')
+            sg.popup(f'Error: {user_input} is not a valid city name.\nPlease select one of this list : \n{[tuple(days_instances.getCityNames())[i].capitalize() for i in range(len(days_instances.getCityNames()))]}')
             continue
 
         result1 = days_instances.getMaxWindSpeed(user_input)
@@ -117,7 +124,7 @@ def temp_over_time():
 
         # Display the message if the user input is invalid
         if days_instances.getCityWeather(user_input) == []:
-            sg.popup(f'Error: {user_input} is not a valid city name')
+            sg.popup(f'Error: {user_input} is not a valid city name.\nPlease select one of this list : \n{[tuple(days_instances.getCityNames())[i].capitalize() for i in range(len(days_instances.getCityNames()))]}')
             continue
 
         result = days_instances.plotTemperature(user_input)
@@ -163,7 +170,7 @@ def hottest_and_coldest_day():
 
         # Display the message if the user input is invalid
         if days_instances.getCityWeather(user_input) == []:
-            sg.popup(f'Error: {user_input} is not a valid city name')
+            sg.popup(f'Error: {user_input} is not a valid city name.\nPlease select one of this list : \n{[tuple(days_instances.getCityNames())[i].capitalize() for i in range(len(days_instances.getCityNames()))]}')
             continue
 
         result1 = days_instances.hotestDay(user_input)
@@ -343,7 +350,7 @@ def correlation_matrix():
 
         # Display the message if the user input is invalid
         if days_instances.getCityWeather(user_input) == []:
-            sg.popup(f'Error: {user_input} is not a valid city name')
+            sg.popup(f'Error: {user_input} is not a valid city name.\nPlease select one of this list : \n{[tuple(days_instances.getCityNames())[i].capitalize() for i in range(len(days_instances.getCityNames()))]}')
             continue
 
         result = days_instances.plotCorrelationMatrix(user_input)
@@ -373,13 +380,14 @@ def potential_factors_for_max_temp():
 
         # Display the message if the user input is invalid
         if days_instances.getCityWeather(user_input) == []:
-            sg.popup(f'Error: {user_input} is not a valid city name')
+            sg.popup(f'Error: {user_input} is not a valid city name.\nPlease select one of this list : \n{[tuple(days_instances.getCityNames())[i].capitalize() for i in range(len(days_instances.getCityNames()))]}')
             continue
 
-        result = days_instances.factors_max_temp(user_input)
+        result_max = days_instances.factors_max_temp(user_input)
+        result_min = days_instances.factors_min_temp(user_input)
         
         # Update the Text element with the result
-        sg.popup(f"{user_input.capitalize()}'s potential factors for extreme temperatures:\n{result}")
+        sg.popup(f"{user_input.capitalize()}'s potential factors for extreme temperatures:\nCold temp: {result_min} - Hot temp: {result_max}")
     
     window.close()
 

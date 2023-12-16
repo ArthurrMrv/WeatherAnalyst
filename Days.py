@@ -70,19 +70,24 @@ class Days:
         city_weather = self.getCityWeather(city_name)
         return min(city_weather, key=lambda day: day.getMinTemp()) if len(city_weather) > 0 else None
 
-    def correlationMatrix(self, city_name):
-        city_weather = self.getCityWeather(city_name) 
-        if city_weather == []:
-            return None
-        elif city_weather[0].getCo2Levels() == None:
-            matrix = np.array([[day.getMaxTemp(), day.getMinTemp(), day.getWindSpeed(), day.getHumidity(), day.getCloudCover(), day.getPrecipitation()] for day in city_weather])
-        matrix = np.array([[day.getMaxTemp(), day.getMinTemp(), day.getWindSpeed(), day.getHumidity(), day.getCloudCover(), day.getPrecipitation(), day.getCo2Levels(), day.getSeaLevelRise()] for day in city_weather])
-        return np.corrcoef(matrix, rowvar=False)
+    # def correlationMatrix(self, city_name):
+    #     city_weather = self.getCityWeather(city_name) 
+    #     if city_weather == []:
+    #         return None
+    #     elif city_weather[0].getCo2Levels() == None:
+    #         matrix = np.array([[day.getMaxTemp(), day.getMinTemp(), day.getWindSpeed(), day.getHumidity(), day.getCloudCover(), day.getPrecipitation()] for day in city_weather])
+    #     matrix = np.array([[day.getMaxTemp(), day.getMinTemp(), day.getWindSpeed(), day.getHumidity(), day.getCloudCover(), day.getPrecipitation(), day.getCo2Levels(), day.getSeaLevelRise()] for day in city_weather])
+    #     return np.corrcoef(matrix, rowvar=False)
     
     def correlationMatrix(self, city_name):
         city_weather = self.getCityWeather(city_name)
+        #print(city_weather[0].getPrecipitation())
         if city_weather == []:
             return None
+        
+        elif np.mean([city_weather[i].getPrecipitation() for i in range(len(city_weather))]) == 0:
+            matrix = np.array([[day.getMaxTemp(), day.getMinTemp(), day.getWindSpeed(), day.getHumidity(), day.getCloudCover()] for day in city_weather])
+            titles = ['Max Temp', 'Min Temp', 'Wind Speed', 'Humidity', 'Cloud Cover']
         elif city_weather[0].getCo2Levels() is None:
             matrix = np.array([[day.getMaxTemp(), day.getMinTemp(), day.getWindSpeed(), day.getHumidity(), day.getCloudCover(), day.getPrecipitation()] for day in city_weather])
             titles = ['Max Temp', 'Min Temp', 'Wind Speed', 'Humidity', 'Cloud Cover', 'Precipitation']
@@ -199,9 +204,18 @@ class Days:
                 seaLevelRise = float(line[9]) if len(line) > 9 else None
                 self.cities.add(location.lower())
                 self.addDay(Day(date, location, maxTemp, minTemp, precipitation, windSpeed, humidity, cloudCover, co2Levels, seaLevelRise))
-      def factors_max_temp(self, city_name):
-        city = self.cities
-        return (f'{city_name} is not antananarivo')   
+    
+    def factors_max_temp(self, city_name):
+        corr_matrix = self.correlationMatrix(city_name)
+        return corr_matrix[1][np.max(np.where(corr_matrix[0] == np.max(corr_matrix[0][0][2:])))]
+    
+    def factors_min_temp(self, city_name):
+        corr_matrix = self.correlationMatrix(city_name)
+        return corr_matrix[1][np.max(np.where(corr_matrix[0] == np.min(corr_matrix[0][1][2:])))]
+    
+    # def factors_max_temp(self, city_name):
+    #     city = self.cities
+    #     return (f'{city_name} is not antananarivo')   
 """paris: architecture is a heat trap, not enough trees in the city, very dense city, pollution, roadworks"""
 """ london, new york, los angeles: Urban Heat Island (UHI) Effect, Weather Patterns, Global Warming and Climate Change, Greenhouse Gas Emissions, Land Use Changes, Air Pollution, Solar Radiation, Human Activities, Heatwaves, Topography, Water Bodies, Heat Retention in Buildings"""
 """new delhi: Dust and Sandstorms, Vegetation Cover, Population Density, Infrastructure Development, Waste Heat, Adaptation Measures"""
