@@ -1,29 +1,36 @@
-# Weather Analysis Project
+# Weather Analysis System
+
+This project is a Python-based weather analysis system designed for managing weather data and providing a graphical user interface (GUI) for data analysis. The system consists of two primary files: `Days.py` and `gui.py`.
 
 ## Overview
 
-This Python project focuses on analyzing weather data for multiple cities. The dataset includes information such as maximum and minimum temperatures, precipitation, wind speed, humidity, and cloud cover. The goal is to gain insights into the weather patterns of different cities and explore the impact of climate change on a specific city.
+### `Days.py`
+The `Days.py` file serves as the backbone of the weather analysis system, containing two essential classes: `Days` and `Day`. The `Days` class manages weather data for multiple cities and provides various methods for data analysis and retrieval. On the other hand, the `Day` class encapsulates individual weather data points with specific attributes.
 
-## Project Structure
+### `gui.py`
+The `gui.py` file complements the functionality of the `Days.py` file by offering a user-friendly graphical interface (GUI) using the PySimpleGUI library. It acts as an intermediary between users and the weather data management functionalities provided by the `Days` class.
 
-The project is organized into the following components:
+## Functionalities
 
-1. **`data/`**: This directory contains the input dataset (`temperature_data.csv`).
+### `Days` Class
+- Manages weather data efficiently for multiple cities.
+- Offers methods for retrieving city names, adding new weather data points, calculating average temperature, total precipitation, plotting temperature trends, and generating correlation matrices.
 
-2. **`src/`**: This directory contains the Python source code for the project.
+### `gui.py`
+- Provides a GUI interface for users to interact with weather data.
+- Allows querying specific weather information, generating visual plots, performing statistical analysis, and deriving insights from the weather dataset.
 
-3. **`results/`**: This directory stores the results and visualizations generated during the analysis.
+## Usage
 
-4. **Run the Analysis Script:**
-    ```bash
-    python src/weather_analysis.py argv1 argv2 argv3
+1. **Set Up Environment**
+   - Ensure Python 3.x is installed.
+   - Install required dependencies: `PySimpleGUI`.
 
-    ```
-5. argv1 = ..., argv2 = ... etc.
-	
-## Results
+2. **Run the Application**
+   - Run the `gui.py` file using Python: `python gui.py`.
+   - Follow the instructions in the GUI to interact with the weather analysis system.
 
-The visualizations and results of the analysis will be saved in the `results/` directory.
+## Documentation
 
-
+For detailed documentation of the project, including class functionalities, usage instructions, and system overview, refer to the documentation.pdf file.
 
