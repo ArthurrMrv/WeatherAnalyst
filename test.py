@@ -353,6 +353,36 @@ def correlation_matrix():
     
     window.close()
 
+def potential_factors_for_max_temp():
+    layout = [
+        [sg.Text('Potential factors leading to max temperature in each city')],
+        [sg.Text('Please enter city name')],
+        [sg.InputText(key='-USER_INPUT-', size=(30, 1))],
+        [sg.Button('OK'), sg.Button('Cancel')],
+    ]
+
+    window = sg.Window('Potential factors leading to max temperature in each city', layout)
+
+    while True:
+        event, values = window.read()
+
+        if event == sg.WINDOW_CLOSED or event == 'Cancel':
+            break
+
+        user_input = values['-USER_INPUT-'].lower()
+
+        # Display the message if the user input is invalid
+        if days_instances.getCityWeather(user_input) == []:
+            sg.popup(f'Error: {user_input} is not a valid city name')
+            continue
+
+        result = days_instances.factors_max_temp(user_input)
+        
+        # Update the Text element with the result
+        sg.popup(f"{user_input.capitalize()}'s potential factors for extreme temperatures:\n{result}")
+    
+    window.close()
+
 # Define the buttons and their associated functions
 buttons = [
     {'text': 'Average temperature', 'function': show_average_temperature},
@@ -365,7 +395,7 @@ buttons = [
     {'text': 'Overall Hottest day', 'function': overall_hottest_day},
     {'text': 'Overall Coldest day', 'function': overall_coldest_day},
     {'text': 'Specific day category', 'function': specific_day_category},
-    {'text': 'Correlation Matrix between weather variables for a city', 'function': correlation_matrix},
+    {'text': 'Potential factors leading to \nmax temperature in each city', 'function': potential_factors_for_max_temp},
 
 
 
