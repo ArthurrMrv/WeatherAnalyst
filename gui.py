@@ -404,6 +404,7 @@ buttons = [
     {'text': 'Overall Coldest day', 'function': overall_coldest_day},
     {'text': 'Specific day category', 'function': specific_day_category},
     {'text': 'Potential factors leading to \nmax temperature in each city', 'function': potential_factors_for_max_temp},
+    {'text': 'Correlation Matrix for a city', 'function': correlation_matrix},
 
 
 
