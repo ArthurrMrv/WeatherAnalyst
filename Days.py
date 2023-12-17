@@ -197,27 +197,15 @@ class Days:
     
     def factors_max_temp(self, city_name):
         """find the most correlated factor to max_temp (exept min_temp)
-
-        Args:
-            city_name (_type_): _description_
-
-        Returns:
-            _type_: _description_
         """
         corr_matrix = self.correlationMatrix(city_name)
-        return corr_matrix[1][np.max(np.where(corr_matrix[0] == np.max(corr_matrix[0][0][2:])))]
+        return corr_matrix[1][np.max(np.where(np.abs(corr_matrix[0]) == np.max(np.abs(corr_matrix[0][0][2:]))))]
     
     def factors_min_temp(self, city_name):
         """find the most correlated factor to min_temp (exept max_temp)
-
-        Args:
-            city_name (_type_): _description_
-
-        Returns:
-            _type_: _description_
         """
         corr_matrix = self.correlationMatrix(city_name)
-        return corr_matrix[1][np.max(np.where(corr_matrix[0] == np.min(corr_matrix[0][1][2:])))]
+        return corr_matrix[1][np.max(np.where(np.abs(corr_matrix[0]) == np.min(np.abs(corr_matrix[0][1][2:]))))]
 
 class Day:
     
