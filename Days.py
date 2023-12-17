@@ -205,7 +205,7 @@ class Days:
         """find the most correlated factor to min_temp (exept max_temp)
         """
         corr_matrix = self.correlationMatrix(city_name)
-        return corr_matrix[1][np.max(np.where(np.abs(corr_matrix[0]) == np.min(np.abs(corr_matrix[0][1][2:]))))]
+        return corr_matrix[1][np.max(np.where(np.abs(corr_matrix[0]) == np.max(np.abs(corr_matrix[0][1][2:]))))]
 
 class Day:
     
