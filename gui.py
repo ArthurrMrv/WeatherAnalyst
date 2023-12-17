@@ -7,10 +7,9 @@ os.system("pip3 install PySimpleGUI")
 import PySimpleGUI as sg
 from Days import Days
 
-#C:\Users\ulyss\Documents\Visual Studio\Python\Algorithms and Software Concepts\Final_Project\Algorithms-main
-
 days_instances = Days()
 days_instances.loadTemp('data_temperature.txt')
+days_instances.loadTemp('Paris_data_climate.txt')
 
 # Function to create a new window for Average temperatures
 
