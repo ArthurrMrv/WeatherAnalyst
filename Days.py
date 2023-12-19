@@ -1,10 +1,15 @@
+from typing import Any
 import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.colors as mcolors
 
 class Days:
     def __init__(self) -> None:
         self.data = dict()
         self.cities = set()
+    
+    def getDayArttibutes(self):
+        return ['date', 'location', 'maxTemp', 'minTemp', 'precipitation', 'windSpeed', 'humidity', 'cloudCover', 'co2Levels', 'seaLevelRise']
     
     def getCityNames(self):
         return self.cities
@@ -206,6 +211,27 @@ class Days:
         """
         corr_matrix = self.correlationMatrix(city_name)
         return corr_matrix[1][np.max(np.where(np.abs(corr_matrix[0]) == np.max(np.abs(corr_matrix[0][1][2:]))))]
+    
+    def compare_variables(self, variable1, variable2, *city_names, color_list = tuple(mcolors.CSS4_COLORS.values())[20:]):
+        """compare two variables by plotting them on a scatter plot
+        """
+        for i, city_name in enumerate(city_names):
+            city_weather = self.getCityWeather(city_name)
+            if len(city_weather) == 0:
+                print(f"Error: {city_name} is not a valid city name")
+                continue
+            try:
+                plt.scatter([getattr(day, variable1) for day in city_weather], 
+                            [getattr(day, variable2) for day in city_weather], 
+                            label = city_name,
+                            c = color_list[(i+20)%len(color_list)] )
+            except:
+                raise Exception(f"Error: {variable1} or {variable2} is not a valid variable")
+        plt.legend()
+        plt.xlabel(variable1)
+        plt.ylabel(variable2)
+        plt.title(f'{variable1} vs {variable2}')
+        plt.show()
 
 class Day:
     
