@@ -1,0 +1,10 @@
+# Requirements file for Weather Analysis System
+
+# PySimpleGUI for GUI development
+PySimpleGUI==4.47.0
+
+# Matplotlib for plotting graphs
+matplotlib==3.5.0
+
+# NumPy for numerical operations
+numpy==1.21.5
